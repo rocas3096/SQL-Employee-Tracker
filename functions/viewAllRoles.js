@@ -1,15 +1,16 @@
-function viewAllRoles() {
+// Function to view all roles in the database with department and salary information
+function viewAllRoles(connection, startApp) {
   const query = `
-      SELECT r.id, r.title, r.salary, d.name AS department 
+      SELECT r.id, r.title, d.name AS department, r.salary 
       FROM roles AS r 
-      JOIN departments AS d ON r.department_id = d.id`;
+      JOIN departments AS d ON r.department_id = d.id`; // SQL query to retrieve role details with department and salary information
   connection.query(query, (err, results) => {
     if (err) {
-      console.error("Error retrieving roles:", err);
+      console.error("Error retrieving roles:", err); // Error handling if the role retrieval fails
     } else {
-      console.table(results);
+      console.table(results); // Displaying the results in a table format
     }
-    startApp();
+    startApp(); // Restart the application
   });
 }
 

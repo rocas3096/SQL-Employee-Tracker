@@ -9,6 +9,7 @@ const addARole = require("./functions/addARole");
 const addAnEmployee = require("./functions/addAnEmployee");
 const updateAnEmployeeRole = require("./functions/updateAnEmployeeRole");
 
+// Create a connection to the MySQL database
 const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -17,7 +18,9 @@ const connection = mysql.createConnection({
   database: "employees_db",
 });
 
+// Function to start the application
 function startApp() {
+  // Prompt the user for the action they want to perform
   inquirer
     .prompt([
       {
@@ -39,31 +42,32 @@ function startApp() {
     .then((answers) => {
       const { action } = answers;
 
+      // Perform the selected action based on user input
       switch (action) {
         case "View all departments":
-          viewAllDepartments();
+          viewAllDepartments(connection, startApp);
           break;
         case "View all roles":
-          viewAllRoles();
+          viewAllRoles(connection, startApp);
           break;
         case "View all employees":
-          viewAllEmployees();
+          viewAllEmployees(connection, startApp);
           break;
         case "Add a department":
-          addADepartment();
+          addADepartment(connection, startApp);
           break;
         case "Add a role":
-          addARole();
+          addARole(connection, startApp);
           break;
         case "Add an employee":
-          addAnEmployee();
+          addAnEmployee(connection, startApp);
           break;
         case "Update an employee role":
-          updateAnEmployeeRole();
+          updateAnEmployeeRole(connection, startApp);
           break;
         case "Exit":
           console.log("Exiting the application");
-          connection.end();
+          connection.end(); // Close the database connection
           break;
       }
     })
@@ -73,4 +77,5 @@ function startApp() {
     });
 }
 
+// Start the application
 startApp();
