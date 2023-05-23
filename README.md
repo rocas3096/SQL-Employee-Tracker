@@ -43,6 +43,10 @@ To add a department, users are prompted to enter the department's name, which is
 
 If users choose to update an employee's role, they are prompted to select the employee to update and provide the new role. The employee's role is then updated accordingly in the database.
 
+A demo video is available to demonstrate the functionality:
+
+[![Demo of Note taker demonstrating functionality](https://drive.google.com/thumbnail?id=1gKnWbwgsXT-7bdLU4NTTJRe1l0NdwhpQ)](https://drive.google.com/uc?id=1gKnWbwgsXT-7bdLU4NTTJRe1l0NdwhpQ)
+
 ## License
 
 This project does not have any specific license.
