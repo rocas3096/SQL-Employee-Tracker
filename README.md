@@ -16,13 +16,14 @@ SQL Employee Tracker is a command-line application that allows users to manage a
 ## Installation
 
 To deploy this code locally, follow these steps:
-
 1. Clone the repository by visiting the GitHub repository (provide link) and copying the repository's link.
 2. Open Git Bash and navigate to the desired directory where you want to clone the code.
 3. Type `git clone` followed by the copied link and press Enter.
 4. Navigate into the cloned directory.
 5. Install the required dependencies by typing `npm install` in the terminal.
-6. Start the application by running `node index.js` in the terminal.
+6. Create the database by running the provided schema file. In the terminal, enter the following command: `mysql -u your_username -p < db/schema.sql` (replace `your_username` with your MySQL username).
+7. Populate the database with sample data by running the provided seeds file. In the terminal, enter the following command: `mysql -u your_username -p < db/seeds.sql` (replace `your_username` with your MySQL username).
+8. Start the application by running `node index.js` in the terminal.
 
 ## Usage
 
@@ -41,6 +42,10 @@ When selecting the "View all departments" option, a formatted table is displayed
 To add a department, users are prompted to enter the department's name, which is then added to the database. Similarly, adding a role involves providing the role's name, salary, and department, which are subsequently added to the database. When adding an employee, users are prompted to enter the employee's first name, last name, role, and manager. Once the information is submitted, the employee is added to the database.
 
 If users choose to update an employee's role, they are prompted to select the employee to update and provide the new role. The employee's role is then updated accordingly in the database.
+
+A demo video is available to demonstrate the functionality:
+
+[![Demo of Note taker demonstrating functionality](https://drive.google.com/thumbnail?id=1gKnWbwgsXT-7bdLU4NTTJRe1l0NdwhpQ)](https://drive.google.com/uc?id=1gKnWbwgsXT-7bdLU4NTTJRe1l0NdwhpQ)
 
 ## License
 
