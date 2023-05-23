@@ -16,13 +16,14 @@ SQL Employee Tracker is a command-line application that allows users to manage a
 ## Installation
 
 To deploy this code locally, follow these steps:
-
 1. Clone the repository by visiting the GitHub repository (provide link) and copying the repository's link.
 2. Open Git Bash and navigate to the desired directory where you want to clone the code.
 3. Type `git clone` followed by the copied link and press Enter.
 4. Navigate into the cloned directory.
 5. Install the required dependencies by typing `npm install` in the terminal.
-6. Start the application by running `node index.js` in the terminal.
+6. Create the database by running the provided schema file. In the terminal, enter the following command: `mysql -u your_username -p < db/schema.sql` (replace `your_username` with your MySQL username).
+7. Populate the database with sample data by running the provided seeds file. In the terminal, enter the following command: `mysql -u your_username -p < db/seeds.sql` (replace `your_username` with your MySQL username).
+8. Start the application by running `node index.js` in the terminal.
 
 ## Usage
 
