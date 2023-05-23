@@ -22,5 +22,5 @@ INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('Ashl
 INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('Kevin', 'Tupik', 4, 3);
 INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('Kunal', 'Singh', 5, NULL);
 INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('Malia', 'Brown', 6, 5);
-INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('Sa rah', 'Lourd', 7, NULL);
+INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('Sarah', 'Lourd', 7, NULL);
 INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('Tom', 'Allen', 8, 7);

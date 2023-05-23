@@ -8,21 +8,24 @@ function addAnEmployee(connection, startApp) {
 
   connection.query(roleQuery, (err, roleResults) => {
     if (err) {
-      console.error("Error retrieving roles:", err); // Error handling if the role retrieval fails
+      console.error("Error retrieving roles:", err);
       startApp();
       return;
     }
 
-    const roleTitles = roleResults.map((role) => role.title); // Extracting role titles from the query results
+    const roleTitles = roleResults.map((role) => role.title);
 
     connection.query(managerQuery, (err, managerResults) => {
       if (err) {
-        console.error("Error retrieving managers:", err); // Error handling if the manager retrieval fails
+        console.error("Error retrieving managers:", err);
         startApp();
         return;
       }
 
-      const managers = managerResults.map((manager) => manager.manager); // Extracting manager names from the query results
+      const managers = managerResults.map((manager) => manager.manager);
+
+      // Add the "No Manager" option to the managers array
+      managers.unshift("No Manager");
 
       inquirer
         .prompt([
@@ -40,70 +43,102 @@ function addAnEmployee(connection, startApp) {
             type: "list",
             name: "title",
             message: "What is the employee's role?",
-            choices: roleTitles, // Providing the role titles as choices for the user
+            choices: roleTitles,
           },
           {
             type: "list",
             name: "manager",
             message: "Who is the employee's manager?",
-            choices: managers, // Providing the manager names as choices for the user
+            choices: managers,
           },
         ])
         .then((answers) => {
           const { firstName, lastName, title, manager } = answers;
 
-          const roleIdQuery = `SELECT id FROM roles WHERE title = ?`; // SQL query to retrieve the role ID based on the title
+          const roleIdQuery = `SELECT id FROM roles WHERE title = ?`;
           connection.query(roleIdQuery, [title], (err, roleIdResults) => {
             if (err) {
-              console.error("Error retrieving role ID:", err); // Error handling if the role ID retrieval fails
+              console.error("Error retrieving role ID:", err);
               startApp();
               return;
             }
 
-            const roleId = roleIdResults[0].id; // Extracting the role ID from the query results
+            const roleId = roleIdResults[0].id;
 
-            const managerIdQuery = `SELECT id FROM employees WHERE CONCAT(first_name, " ", last_name) = ?`; // SQL query to retrieve the manager ID based on the name
-            connection.query(
-              managerIdQuery,
-              [manager],
-              (err, managerIdResults) => {
-                if (err) {
-                  console.error("Error retrieving manager ID:", err); // Error handling if the manager ID retrieval fails
-                  startApp();
-                  return;
-                }
-
-                const managerId = managerIdResults[0].id; // Extracting the manager ID from the query results
-
-                const addEmployeeQuery = `
-                INSERT INTO employees (first_name, last_name, role_id, manager_id)
-                VALUES (?, ?, ?, ?)
-              `;
-
-                connection.query(
-                  addEmployeeQuery,
-                  [firstName, lastName, roleId, managerId], // Providing the employee details for insertion
-                  (err, results) => {
-                    if (err) {
-                      console.error("Error adding employee:", err); // Error handling if the employee insertion fails
-                    } else {
-                      console.log(
-                        `Added ${firstName} ${lastName} to the database` // Success message if the employee is successfully added
-                      );
-                    }
-                    startApp(); // Restart the application
+            // Check if "No Manager" was selected
+            let managerId = null;
+            if (manager !== "No Manager") {
+              const managerIdQuery = `SELECT id FROM employees WHERE CONCAT(first_name, " ", last_name) = ?`;
+              connection.query(
+                managerIdQuery,
+                [manager],
+                (err, managerIdResults) => {
+                  if (err) {
+                    console.error("Error retrieving manager ID:", err);
+                    startApp();
+                    return;
                   }
-                );
-              }
-            );
+
+                  managerId = managerIdResults[0].id;
+
+                  // Insert the employee with the manager
+                  insertEmployee(
+                    connection,
+                    firstName,
+                    lastName,
+                    roleId,
+                    managerId,
+                    startApp
+                  );
+                }
+              );
+            } else {
+              // Insert the employee without a manager
+              insertEmployee(
+                connection,
+                firstName,
+                lastName,
+                roleId,
+                managerId,
+                startApp
+              );
+            }
           });
         })
         .catch((err) => {
-          console.error("Error occurred:", err); // Error handling if there is an issue with the prompt
-          startApp(); // Restart the application
+          console.error("Error occurred:", err);
+          startApp();
         });
     });
   });
+}
+
+// Helper function to insert an employee into the database
+function insertEmployee(
+  connection,
+  firstName,
+  lastName,
+  roleId,
+  managerId,
+  startApp
+) {
+  const addEmployeeQuery = `
+    INSERT INTO employees (first_name, last_name, role_id, manager_id)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  connection.query(
+    addEmployeeQuery,
+    [firstName, lastName, roleId, managerId],
+    (err, results) => {
+      if (err) {
+        console.error("Error adding employee:", err);
+      } else {
+        console.log(`Added ${firstName} ${lastName} to the database`);
+      }
+      startApp();
+    }
+  );
 }
 
 module.exports = addAnEmployee;
